@@ -5,7 +5,17 @@ class CommentsController < ApplicationController
     end
 
     def create
-        comment = Comment.find_or_create_by(comic_id: params[:comic_id])
+        comment = Comment.new(comment_params)
+        if comment.save
         render json: comment
+        else
+        render json: comment.errors
+        end
+    end
+
+    private
+
+    def comment_params
+        params.require(:comment).permit(:content, :comic_id)
     end
 end
